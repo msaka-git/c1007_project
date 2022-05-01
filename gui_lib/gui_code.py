@@ -55,7 +55,7 @@ class Ui_Form(object):
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(30, 80, 111, 16))
         font = QtGui.QFont()
-        font.setFamily("Adobe Gothic Std B")
+        #font.setFamily("Adobe Gothic Std B")
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
@@ -138,13 +138,13 @@ class Ui_Form(object):
 
             infos = response.json()
 
+
             firstValue = infos["rates"][textboxValue.upper()]
             secondValue = infos["rates"][textboxValue2.upper()]
             rsl=round((secondValue / firstValue) * textboxValue3,2)
             rsli=str(rsl)
 
             if textboxValue and textboxValue2 and textboxValue3:
-
                 self.yazi_alani.setText(rsli)
 
         except:
