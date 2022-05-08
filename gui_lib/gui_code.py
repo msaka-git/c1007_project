@@ -12,7 +12,10 @@ from PyQt5.QtWidgets import QComboBox
 
 
 class Ui_Form(object):
+
     def setupUi(self, Form):
+
+
         Form.setObjectName("Form")
         Form.setEnabled(True)
         Form.resize(333, 254)
@@ -70,18 +73,39 @@ class Ui_Form(object):
         font.setWeight(75)
         self.label_3.setFont(font)
         self.label_3.setObjectName("label_3")
-        self.lineEdit = QtWidgets.QLineEdit(Form)
-        self.lineEdit.setGeometry(QtCore.QRect(160, 40, 133, 20))
+
         font = QtGui.QFont()
         font.setPointSize(8)
-        self.lineEdit.setFont(font)
-        self.lineEdit.setObjectName("lineEdit")
-        self.lineEdit_2 = QtWidgets.QLineEdit(Form)
-        self.lineEdit_2.setGeometry(QtCore.QRect(160, 80, 133, 20))
-        self.lineEdit_2.setObjectName("lineEdit_2")
+        # self.lineEdit.setFont(font)
+        # Empty line for amounts
         self.lineEdit_3 = QtWidgets.QLineEdit(Form)
         self.lineEdit_3.setGeometry(QtCore.QRect(160, 120, 133, 20))
         self.lineEdit_3.setObjectName("lineEdit_3")
+
+        # Comboboxes for currency
+        self.cb = QComboBox(Form)
+        self.cb.addItem("Select Currency")
+        self.cb.addItem("TRY")
+        self.cb.addItems(["Java", "C#", "Python"])
+
+        self.cb2 = QComboBox(Form)
+        self.cb2.addItem("Select Currency")
+        self.cb2.addItem("C")
+        self.cb2.addItems(["EUR", "C#", "Python"])
+
+
+        # Combobox Calls
+        self.cb.currentTextChanged.connect(self.from_currency)
+        self.cb = QtWidgets.QWidget.setGeometry(self.cb,QtCore.QRect(160, 40, 133, 20))
+        self.cb2.currentTextChanged.connect(self.to_currency)
+        self.cb2 = QtWidgets.QWidget.setGeometry(self.cb2, QtCore.QRect(160, 80, 133, 20))
+
+        #####
+
+
+
+
+
         self.verticalWidget = QtWidgets.QWidget(Form)
         self.verticalWidget.setGeometry(QtCore.QRect(19, 19, 291, 131))
         self.verticalWidget.setObjectName("verticalWidget")
@@ -108,7 +132,7 @@ class Ui_Form(object):
 
 
         # self.cb = QComboBox(Form)
-        # #self.cb= QtWidgets.QLineEdit(Form)
+
         #
         # self.cb.addItem("C")
         # self.cb.addItem("C++")
@@ -121,15 +145,25 @@ class Ui_Form(object):
         self.pushButton.clicked.connect(self.action)
         self.pushButton_ex.clicked.connect(Form.close)
 
+    def from_currency(self,text_data_from):
 
+        self.text_data_from = text_data_from
+        return self.text_data_from
+    def to_currency(self,text_data_to):
+
+        self.text_data_to = text_data_to
+        return self.text_data_to
 
     def action(self):
+
+        currency_data_from = self.from_currency(text_data_from=self.text_data_from)
+        currency_data_to = self.to_currency(text_data_to=self.text_data_to)
+
         try:
-            textboxValue = self.lineEdit.text() # line edit is where you enter input
-            textboxValue2 = self.lineEdit_2.text()
-            textboxValue3 = float(self.lineEdit_3.text())
 
-
+            textbox_value = currency_data_from
+            textbox_value2 = currency_data_to
+            textbox_value3 = float(self.lineEdit_3.text())
 
             api_key = "bf9cdd15f4a19b5d87c30648f7493908"
             url = "http://data.fixer.io/api/latest?access_key=" + api_key
@@ -139,18 +173,19 @@ class Ui_Form(object):
             infos = response.json()
 
 
-            firstValue = infos["rates"][textboxValue.upper()]
-            secondValue = infos["rates"][textboxValue2.upper()]
-            rsl=round((secondValue / firstValue) * textboxValue3,2)
-            rsli=str(rsl)
+            first_value = infos["rates"][textbox_value.upper()]
+            second_value = infos["rates"][textbox_value2.upper()]
+            rsl=round((second_value / first_value) * textbox_value3,2)
+            rsli = str(rsl)
 
-            if textboxValue and textboxValue2 and textboxValue3:
+            if textbox_value and textbox_value2 and textbox_value3:
                 self.yazi_alani.setText(rsli)
 
         except:
             self.yazi_alani.setText("hesap yok")
 
     def retranslateUi(self, Form):
+
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "Form"))
         self.pushButton.setText(_translate("Form", "Calculate"))
