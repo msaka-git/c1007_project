@@ -9,7 +9,7 @@
 from PyQt5 import QtCore, QtGui, QtWidgets
 import requests
 from PyQt5.QtWidgets import QComboBox
-
+from gui_lib import db_ops
 
 class Ui_Form(object):
 
@@ -42,7 +42,6 @@ class Ui_Form(object):
         self.pushButton_ex = QtWidgets.QPushButton(self.horizontalWidget)
         self.pushButton_ex.setObjectName("pushButton_ex")
         self.verticalLayout_2.addWidget(self.pushButton_ex, 0, QtCore.Qt.AlignVCenter|QtCore.Qt.AlignRight)
-
 
 
         self.label = QtWidgets.QLabel(Form)
@@ -83,16 +82,17 @@ class Ui_Form(object):
         self.lineEdit_3.setObjectName("lineEdit_3")
 
         # Comboboxes for currency
+
         self.cb = QComboBox(Form)
         self.cb.addItem("Select Currency")
-        self.cb.addItem("TRY")
-        self.cb.addItems(["Java", "C#", "Python"])
 
         self.cb2 = QComboBox(Form)
         self.cb2.addItem("Select Currency")
-        self.cb2.addItem("C")
-        self.cb2.addItems(["EUR", "C#", "Python"])
 
+        #data = db_ops.fetch_select_data("devise_tri","table_devise")
+        data_name = db_ops.fetch_select_where("devise_tri,devise_nom","table_devise,table_devise_nom","table_devise.id = table_devise_nom.id")
+        self.cb.addItems(i[0]+' - '+i[1] for i in data_name)
+        self.cb2.addItems(i[0]+' - '+i[1] for i in data_name)
 
         # Combobox Calls
         self.cb.currentTextChanged.connect(self.from_currency)
@@ -101,10 +101,6 @@ class Ui_Form(object):
         self.cb2 = QtWidgets.QWidget.setGeometry(self.cb2, QtCore.QRect(160, 80, 133, 20))
 
         #####
-
-
-
-
 
         self.verticalWidget = QtWidgets.QWidget(Form)
         self.verticalWidget.setGeometry(QtCore.QRect(19, 19, 291, 131))
@@ -147,11 +143,11 @@ class Ui_Form(object):
 
     def from_currency(self,text_data_from):
 
-        self.text_data_from = text_data_from
+        self.text_data_from = text_data_from.split(' - ')[0]
         return self.text_data_from
-    def to_currency(self,text_data_to):
 
-        self.text_data_to = text_data_to
+    def to_currency(self,text_data_to):
+        self.text_data_to = text_data_to.split(' - ')[0]
         return self.text_data_to
 
     def action(self):
