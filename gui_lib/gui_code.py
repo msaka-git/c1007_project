@@ -15,6 +15,9 @@ class Ui_Form(object):
 
     def setupUi(self, Form):
 
+        # Window icon
+        Form.setWindowIcon(QtGui.QIcon("icon.png"))
+        #####
 
         Form.setObjectName("Form")
         Form.setEnabled(True)
@@ -183,7 +186,7 @@ class Ui_Form(object):
     def retranslateUi(self, Form):
 
         _translate = QtCore.QCoreApplication.translate
-        Form.setWindowTitle(_translate("Form", "Form"))
+        Form.setWindowTitle(_translate("Form", "CON-AR."))
         self.pushButton.setText(_translate("Form", "Calculate"))
         self.pushButton_ex.setText(_translate("Form","Exit"))
 
