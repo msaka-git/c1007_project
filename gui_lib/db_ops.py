@@ -1,13 +1,16 @@
 import sqlite3
+import os
+from pathlib import Path
 
-def connector_db():
-    con = sqlite3.connect('db_CAR.db')
-    cursor = con.cursor()
-    return cursor
+upper_level_path = Path(__file__).resolve().parents[1]
+db_path = str(upper_level_path)+os.sep+'db_CAR.db'
+
+con = sqlite3.connect(db_path)
+
 
 def cursor_execute(func):
     def wrapper(*args):
-        cursor = connector_db()
+        cursor = con.cursor()
         operation = func(*args)
         data = cursor.execute(operation)
         data_ = data.fetchall()
@@ -25,5 +28,21 @@ def fetch_select_where(select_item,db_table,condition):
     query_construct = "select {} from {} where {};".format(select_item, db_table,condition)
     return query_construct
 
+def save_result(db_table,*values):
+    cur = con.cursor()
+
+    query_insert = "insert into {} values {};".format(db_table,values)
+    print(query_insert)
+
+    cur.execute(query_insert)
+    con.commit()
+    cur.close()
 
 
+
+# INSERT INTO table1 (column1,column2 ,..)
+# VALUES
+#    (value1,value2 ,...),
+#    (value1,value2 ,...),
+#     ...
+#    (value1,value2 ,...);

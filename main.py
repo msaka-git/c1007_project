@@ -1,6 +1,5 @@
-#/bin/env python
+#!/bin/env python
 from gui_lib import gui_code
-
 
 
 if __name__ == "__main__":

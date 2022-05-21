@@ -93,7 +93,7 @@ class Ui_Form(object):
         self.cb2.addItem("Select Currency")
 
         #data = db_ops.fetch_select_data("devise_tri","table_devise")
-        data_name = db_ops.fetch_select_where("devise_tri,devise_nom","table_devise,table_devise_nom","table_devise.id = table_devise_nom.id")
+        data_name = db_ops.fetch_select_where("id,devise_name","table_devise","table_devise.id = table_devise.id")
         self.cb.addItems(i[0]+' - '+i[1] for i in data_name)
         self.cb2.addItems(i[0]+' - '+i[1] for i in data_name)
 
@@ -175,13 +175,22 @@ class Ui_Form(object):
             first_value = infos["rates"][textbox_value.upper()]
             second_value = infos["rates"][textbox_value2.upper()]
             rsl=round((second_value / first_value) * textbox_value3,2)
-            rsli = str(rsl)
+
+
+            fractional_separator = ","
+            currency = "{:,.2f}".format(rsl)
+            main_currency, fractional_currency = currency.split(".")[0], currency.split(".")[1]
+            new_main_currency = main_currency.replace(",", ".")
+            rsli = new_main_currency + fractional_separator + fractional_currency
 
             if textbox_value and textbox_value2 and textbox_value3:
                 self.yazi_alani.setText(rsli)
+                db_ops.save_result("table_resultat(montant,cours,devise_source,devise_cible)", rsli,
+                                   round((second_value / first_value),2),
+                                   textbox_value, textbox_value2)
 
         except:
-            self.yazi_alani.setText("hesap yok")
+            self.yazi_alani.setText("Can't calculate")
 
     def retranslateUi(self, Form):
 
@@ -193,3 +202,5 @@ class Ui_Form(object):
         self.label.setText(_translate("Form", "From Currency: "))
         self.label_2.setText(_translate("Form", "To Currency: "))
         self.label_3.setText(_translate("Form", "Amount: "))
+
+
