@@ -4,6 +4,7 @@ from .db_ops import fetch_select_where
 def plt_construct(x, y, dev_source, dev_cible, rate,amounts):
     plt.figure(figsize=(10,5))
     bar_plot=plt.bar(x,y,width=0.1)
+    #plt.hist(x,rwidth=0.1)
     plt.xlabel("Dates",fontdict={'family':'serif','color':'darkred','size':10})
     plt.ylabel("Amount\n{}".format(dev_source+'->'+dev_cible),rotation=0,fontdict={'family':'serif','color':'darkred','size':10,'position':(0.0,1.0)})
     plt.title("CON-AR. Xchange Graph")
@@ -25,7 +26,6 @@ def format_data(dev_source,dev_cible):
     out_days = [item for t in currency_pair for item in t]
     data = [item.split(',')[0] for t in amounts for item in t if isinstance(item,str)]
     data_am = [str(item) for t in amounts_ for item in t]
-    print(data_am)
     datam = []
     rate = []
     for r in amounts:

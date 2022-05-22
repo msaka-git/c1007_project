@@ -32,7 +32,7 @@ def save_result(db_table,*values):
     cur = con.cursor()
 
     query_insert = "insert into {} values {};".format(db_table,values)
-    print(query_insert)
+    #print(query_insert)
 
     cur.execute(query_insert)
     con.commit()
