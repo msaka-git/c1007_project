@@ -10,6 +10,7 @@ from PyQt5 import QtCore, QtGui, QtWidgets
 import requests
 from PyQt5.QtWidgets import QComboBox
 from gui_lib import db_ops
+from gui_lib import graph_ops as gr
 
 class Ui_Form(object):
 
@@ -30,22 +31,27 @@ class Ui_Form(object):
         Form.setFont(font)
         Form.setMouseTracking(False)
         self.horizontalWidget = QtWidgets.QWidget(Form)
-        self.horizontalWidget.setGeometry(QtCore.QRect(120, 210, 77, 25))
+        self.horizontalWidget.setGeometry(QtCore.QRect(40, 210, 77, 25))
         self.horizontalWidget.setObjectName("horizontalWidget")
         self.verticalLayout_2 = QtWidgets.QGridLayout(self.horizontalWidget)
         self.verticalLayout_2.setSizeConstraint(QtWidgets.QLayout.SetFixedSize)
         self.verticalLayout_2.setContentsMargins(0, 0, 0, 1)
         self.verticalLayout_2.setObjectName("verticalLayout_2")
+
+        # Calculate push button
         self.pushButton = QtWidgets.QPushButton(self.horizontalWidget)
         self.pushButton.setObjectName("pushButton")
         self.verticalLayout_2.addWidget(self.pushButton, 0, QtCore.Qt.AlignVCenter|QtCore.Qt.AlignLeft)
 
-
-
+        # Exit push button
         self.pushButton_ex = QtWidgets.QPushButton(self.horizontalWidget)
         self.pushButton_ex.setObjectName("pushButton_ex")
         self.verticalLayout_2.addWidget(self.pushButton_ex, 0, QtCore.Qt.AlignVCenter|QtCore.Qt.AlignRight)
 
+        # Graph push button
+        self.pushButton_gr = QtWidgets.QPushButton(self.horizontalWidget)
+        self.pushButton_gr.setObjectName("pushButton_gr")
+        self.verticalLayout_2.addWidget(self.pushButton_gr, 0, QtCore.Qt.AlignLeft)
 
         self.label = QtWidgets.QLabel(Form)
         self.label.setGeometry(QtCore.QRect(30, 40, 111, 16))
@@ -129,20 +135,12 @@ class Ui_Form(object):
         self.yazi_alani.setCursorMoveStyle(QtCore.Qt.LogicalMoveStyle)
         self.yazi_alani.setObjectName("yazi_alani")
 
-
-        # self.cb = QComboBox(Form)
-
-        #
-        # self.cb.addItem("C")
-        # self.cb.addItem("C++")
-        # self.cb.addItems(["Java", "C#", "Python"])
-        # #self.cb.currentIndexChanged.connect(self.selectionchange)
-
         self.retranslateUi(Form)
         QtCore.QMetaObject.connectSlotsByName(Form)
 
         self.pushButton.clicked.connect(self.action)
         self.pushButton_ex.clicked.connect(Form.close)
+        self.pushButton_gr.clicked.connect(self.graphic)
 
     def from_currency(self,text_data_from):
 
@@ -171,12 +169,12 @@ class Ui_Form(object):
 
             infos = response.json()
 
-
+            # Calculates destination currency rate against euro.
             first_value = infos["rates"][textbox_value.upper()]
             second_value = infos["rates"][textbox_value2.upper()]
             rsl=round((second_value / first_value) * textbox_value3,2)
 
-
+            # Better numeric output Ex: 3.456,98
             fractional_separator = ","
             currency = "{:,.2f}".format(rsl)
             main_currency, fractional_currency = currency.split(".")[0], currency.split(".")[1]
@@ -192,12 +190,20 @@ class Ui_Form(object):
         except:
             self.yazi_alani.setText("Can't calculate")
 
-    def retranslateUi(self, Form):
+    def graphic(self):
+        dev_source = self.from_currency(text_data_from=self.text_data_from)
+        dev_dest = self.to_currency(text_data_to=self.text_data_to)
+        date, amount, rate, amounts = gr.format_data(dev_source,dev_dest)
+        grpa = gr.plt_construct(date, amount, dev_source, dev_dest, rate, amounts)
+        grpa.show()
 
+    def retranslateUi(self, Form):
+        # Replace objects in main window
         _translate = QtCore.QCoreApplication.translate
         Form.setWindowTitle(_translate("Form", "CON-AR."))
         self.pushButton.setText(_translate("Form", "Calculate"))
         self.pushButton_ex.setText(_translate("Form","Exit"))
+        self.pushButton_gr.setText(_translate("Form","Graph"))
 
         self.label.setText(_translate("Form", "From Currency: "))
         self.label_2.setText(_translate("Form", "To Currency: "))
