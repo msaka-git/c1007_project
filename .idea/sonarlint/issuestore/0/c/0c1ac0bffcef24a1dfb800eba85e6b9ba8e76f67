@@ -1,0 +1,16 @@
+
+lpython:S1165"URename this field "pushButton_gr" to match the regular expression ^[_a-z][_a-z0-9]*$.(œ›¿Ÿ
+npython:S116+"RRename this field "pushButton" to match the regular expression ^[_a-z][_a-z0-9]*$.(¾™§ˆûÿÿÿÿ
+tpython:S116""XRename this field "horizontalWidget" to match the regular expression ^[_a-z][_a-z0-9]*$.(Æž³Ðüÿÿÿÿ
+mpython:S116s"VRename this field "verticalWidget" to match the regular expression ^[_a-z][_a-z0-9]*$.(”‰¢Ö
+mpython:S116v"VRename this field "verticalLayout" to match the regular expression ^[_a-z][_a-z0-9]*$.(”ÊÈÙ
+qpython:S1160"URename this field "pushButton_ex" to match the regular expression ^[_a-z][_a-z0-9]*$.(Ö®ìîÿÿÿÿÿ
+opython:S116%"XRename this field "verticalLayout_2" to match the regular expression ^[_a-z][_a-z0-9]*$.(Þ‚Îƒ
+hpython:S116Z"RRename this field "lineEdit_3" to match the regular expression ^[_a-z][_a-z0-9]*$.(”©ÆO
+wpython:S101"aRename class "Ui_Form" to match the regular expression ^_?([A-Z_][a-zA-Z0-9]*|[a-z_][a-z0-9_]*)$.(˜Í’a
+gpython:S117"PRename this parameter "Form" to match the regular expression ^[_a-z][a-z0-9_]*$.(Ëö‘¹
+bpython:S100"KRename method "setupUi" to match the regular expression ^[a-z_][a-z0-9_]*$.(Ëö‘¹
+6python:S125f"Remove this commented out code.(•éñË
+Upython:S5754¿"<Specify an exception class to catch or reraise the exception(ˆÊÉ·
+mpython:S117Ö"PRename this parameter "Form" to match the regular expression ^[_a-z][a-z0-9_]*$.(ý‰·úÿÿÿÿ
+npython:S100Ö"QRename method "retranslateUi" to match the regular expression ^[a-z_][a-z0-9_]*$.(ý‰·úÿÿÿÿ

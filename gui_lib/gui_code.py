@@ -11,6 +11,7 @@ import requests
 from PyQt5.QtWidgets import QComboBox
 from gui_lib import db_ops
 from gui_lib import graph_ops as gr
+from PyQt5.QtWidgets import QMessageBox
 
 class Ui_Form(object):
 
@@ -190,12 +191,25 @@ class Ui_Form(object):
         except:
             self.yazi_alani.setText("Can't calculate")
 
+    def no_data_popup(self):
+        msg = QMessageBox()
+        msg.setIcon(QMessageBox.Warning)
+        msg.setWindowIcon(QtGui.QIcon('icon.png'))
+        msg.setWindowTitle("Con-AR. -Warning-")
+        msg.setText("\nNo data found!\t\t")
+        # To execute; msg.exec_()
+        return msg
+
     def graphic(self):
         dev_source = self.from_currency(text_data_from=self.text_data_from)
         dev_dest = self.to_currency(text_data_to=self.text_data_to)
         date, amount, rate, amounts = gr.format_data(dev_source,dev_dest)
-        grpa = gr.plt_construct(date, amount, dev_source, dev_dest, rate, amounts)
-        grpa.show()
+        if not date:
+            msg_box = self.no_data_popup()
+            msg_box.exec_()
+        else:
+            grpa = gr.plt_construct(date, amount, dev_source, dev_dest, rate, amounts)
+            grpa.show()
 
     def retranslateUi(self, Form):
         # Replace objects in main window

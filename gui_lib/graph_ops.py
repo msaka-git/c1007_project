@@ -21,13 +21,12 @@ def format_data(dev_source,dev_cible):
 
     amounts = fetch_select_where("montant,cours", "table_resultat",
                                  "devise_source = '{}' and devise_cible = '{}'".format(dev_source, dev_cible))
-    amounts_ = fetch_select_where("montant", "table_resultat",
-                                 "devise_source = '{}' and devise_cible = '{}'".format(dev_source, dev_cible))
+    amounts_ = fetch_select_where("montant", "table_resultat","devise_source = '{}' and devise_cible = '{}'".format(dev_source, dev_cible))
     out_days = [item for t in currency_pair for item in t]
     data = [item.split(',')[0] for t in amounts for item in t if isinstance(item,str)]
     data_am = [str(item) for t in amounts_ for item in t]
-    datam = []
-    rate = []
+    datam = [] # Amount list
+    rate = [] # Rate
     for r in amounts:
         rate.append(str(r[1]))
     for i in data:
