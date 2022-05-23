@@ -203,12 +203,12 @@ class Ui_Form(object):
     def graphic(self):
         dev_source = self.from_currency(text_data_from=self.text_data_from)
         dev_dest = self.to_currency(text_data_to=self.text_data_to)
-        date, amount, rate, amounts = gr.format_data(dev_source,dev_dest)
+        date, rate = gr.format_data(dev_source,dev_dest)
         if not date:
             msg_box = self.no_data_popup()
             msg_box.exec_()
         else:
-            grpa = gr.plt_construct(date, amount, dev_source, dev_dest, rate, amounts)
+            grpa = gr.plt_construct(date, rate,dev_source, dev_dest)
             grpa.show()
 
     def retranslateUi(self, Form):
