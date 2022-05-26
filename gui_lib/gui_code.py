@@ -8,10 +8,48 @@
 
 from PyQt5 import QtCore, QtGui, QtWidgets
 import requests
-from PyQt5.QtWidgets import QComboBox
+from PyQt5.QtWidgets import QComboBox, QVBoxLayout, QGridLayout, QPushButton, QGroupBox, QRadioButton
 from gui_lib import db_ops
 from gui_lib import graph_ops as gr
 from PyQt5.QtWidgets import QMessageBox
+
+class AnotherWindow(QtWidgets.QDialog):
+
+    def __init__(self, parent=None):
+        super(AnotherWindow, self).__init__(parent)
+        db_query=db_ops.fetch_select_data("distinct devise_source,devise_cible",'table_resultat')
+        self.listCheckBox = [i for i in db_query]
+        self.ls_listCheckBox = []
+        for a,b in enumerate(self.listCheckBox):
+            self.ls_listCheckBox.append("{}-->{}".format(b[0],b[1]))
+
+        grid = QGridLayout()
+        self.resize(250,100)
+        self.setWindowIcon(QtGui.QIcon('icon.png'))
+        self.setWindowTitle("CON-AR. Graphs")
+        vbox = QVBoxLayout()
+        groupbox = QGroupBox("Select Currency Pair")
+        for i, v in enumerate(self.ls_listCheckBox):
+
+            self.ls_listCheckBox[i] = QRadioButton(v)
+            vbox.addWidget(self.ls_listCheckBox[i])
+            groupbox.setLayout(vbox)
+            grid.addWidget(groupbox,i,0)
+            self.setLayout(grid)
+
+        self.button = QPushButton("\tOpen Graphic\t")
+        self.button.clicked.connect(self.checkboxChanged)
+        vbox.addWidget(self.button)
+
+
+    def checkboxChanged(self):
+
+        for i, v in enumerate(self.ls_listCheckBox):
+
+           if v.isChecked():
+               date, rate = gr.format_data(v.text().split('-->')[0], v.text().split('-->')[1])
+               grpa = gr.plt_construct(date,rate,v.text().split('-->')[0], v.text().split('-->')[1])
+               grpa.show()
 
 class Ui_Form(object):
 
@@ -67,7 +105,7 @@ class Ui_Form(object):
         self.label_2 = QtWidgets.QLabel(Form)
         self.label_2.setGeometry(QtCore.QRect(30, 80, 111, 16))
         font = QtGui.QFont()
-        #font.setFamily("Adobe Gothic Std B")
+
         font.setPointSize(10)
         font.setBold(True)
         font.setWeight(75)
@@ -85,7 +123,7 @@ class Ui_Form(object):
 
         font = QtGui.QFont()
         font.setPointSize(8)
-        # self.lineEdit.setFont(font)
+
         # Empty line for amounts
         self.lineEdit_3 = QtWidgets.QLineEdit(Form)
         self.lineEdit_3.setGeometry(QtCore.QRect(160, 120, 133, 20))
@@ -99,7 +137,7 @@ class Ui_Form(object):
         self.cb2 = QComboBox(Form)
         self.cb2.addItem("Select Currency")
 
-        #data = db_ops.fetch_select_data("devise_tri","table_devise")
+
         data_name = db_ops.fetch_select_where("id,devise_name","table_devise","table_devise.id = table_devise.id")
         self.cb.addItems(i[0]+' - '+i[1] for i in data_name)
         self.cb2.addItems(i[0]+' - '+i[1] for i in data_name)
@@ -201,15 +239,9 @@ class Ui_Form(object):
         return msg
 
     def graphic(self):
-        dev_source = self.from_currency(text_data_from=self.text_data_from)
-        dev_dest = self.to_currency(text_data_to=self.text_data_to)
-        date, rate = gr.format_data(dev_source,dev_dest)
-        if not date:
-            msg_box = self.no_data_popup()
-            msg_box.exec_()
-        else:
-            grpa = gr.plt_construct(date, rate,dev_source, dev_dest)
-            grpa.show()
+
+        nw_win = AnotherWindow()
+        nw_win.exec_()
 
     def retranslateUi(self, Form):
         # Replace objects in main window
