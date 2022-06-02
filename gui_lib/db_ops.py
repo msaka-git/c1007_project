@@ -30,19 +30,9 @@ def fetch_select_where(select_item,db_table,condition):
 
 def save_result(db_table,*values):
     cur = con.cursor()
-
     query_insert = "insert into {} values {};".format(db_table,values)
-    #print(query_insert)
 
     cur.execute(query_insert)
     con.commit()
     cur.close()
 
-
-
-# INSERT INTO table1 (column1,column2 ,..)
-# VALUES
-#    (value1,value2 ,...),
-#    (value1,value2 ,...),
-#     ...
-#    (value1,value2 ,...);
