@@ -43,13 +43,14 @@ class AnotherWindow(QtWidgets.QDialog):
 
 
     def checkboxChanged(self):
-
+        AnotherWindow.close(self)
         for i, v in enumerate(self.ls_listCheckBox):
 
            if v.isChecked():
                date, rate = gr.format_data(v.text().split('-->')[0], v.text().split('-->')[1])
                grpa = gr.plt_construct(date,rate,v.text().split('-->')[0], v.text().split('-->')[1])
                grpa.show()
+
 
 class Ui_Form(object):
 
